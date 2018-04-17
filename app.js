@@ -17,39 +17,27 @@ var getIPs_onefirewall = (req, res) => {
         var IPv4_regexp = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/gi;
         var ip_list = str.match(IPv4_regexp);
 
-
-        //var ip = "185.200.212.102";
         var notLocatedIPs = 0;
         for (let i = 0; i < ip_list.length; i++) {
             var geo = geoip.lookup(ip_list[i]);
             if (geo === null) {
-                //list ip that are not mapped to an address
-                console.log(ip_list[i])
+                //list IPs that are not mapped to an address
+                /*
+                ** for the moment we have only 13 IPs that we can't find location,
+                ** so we can use another service to locate those IPs if we find it reasonable
+                */
+                console.log(ip_list[i]) 
                 notLocatedIPs++;
             } else {                   
-                //console.log({lat: geo.ll[0], lng: geo.ll[1]});
+                console.log({lat: geo.ll[0], lng: geo.ll[1]});
             }
             
         }
         console.log('Number of IPs not converted to locations: ' + notLocatedIPs)
         //console.log(ip_list);
     }
-    //callback(createMyJson())
     request(options, callback)
 }
-
-function createMyJson(validElements) {
-    var arrayList = [],
-        resp = JSON.parse(validElements),
-        result = resp.result;
-
-    for (var key in result) {
-        arrayList.push({
-            ip: result[key]
-        });
-    }
-    return arrayList;
-};
 
 // array of IPs question
 // I want to insert in an array the result of getIPs_onefirewall() function ...
