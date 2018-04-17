@@ -23,14 +23,15 @@ var getIPs_onefirewall = (req, res) => {
         for (let i = 0; i < ip_list.length; i++) {
             var geo = geoip.lookup(ip_list[i]);
             if (geo === null) {
-                geo = [0.0000, 0.0000]
+                //list ip that are not mapped to an address
+                console.log(ip_list[i])
                 notLocatedIPs++;
-            } else {         
-                console.log({lat: geo.ll[0], lng: geo.ll[1]});
+            } else {                   
+                //console.log({lat: geo.ll[0], lng: geo.ll[1]});
             }
             
         }
-        console.log('Number of IPs not converted to locations: ' + notLocatedIPs)
+        //console.log('Number of IPs not converted to locations: ' + notLocatedIPs)
         //console.log(ip_list);
     }
     //callback(createMyJson())
@@ -85,7 +86,7 @@ iplocation('185.200.212.102')
 //get the following information about IPs, doesn't include exact position like street address 
 /* var where = require('node-where');
  
-where.is('185.200.212.102', function(err, result) {
+where.is('202.181.4.0', function(err, result) {
   if (result) {
     console.log('City: ' + result.get('city'));
     console.log('State / Region: ' + result.get('region'));
