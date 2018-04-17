@@ -1,0 +1,25 @@
+{
+  "name": "attacklocationbi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onefirewall/attackLocationBi.git"
+  },
+  "author": "Malfor Saja",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/onefirewall/attackLocationBi/issues"
+  },
+  "homepage": "https://github.com/onefirewall/attackLocationBi#readme",
+  "dependencies": {
+    "geoip-lite": "^1.2.1",
+    "ip2location-nodejs": "^8.1.2",
+    "iplocation": "^5.0.0",
+    "node-where": "^1.1.0"
+  }
+}
