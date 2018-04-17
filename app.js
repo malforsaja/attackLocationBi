@@ -31,7 +31,7 @@ var getIPs_onefirewall = (req, res) => {
             }
             
         }
-        //console.log('Number of IPs not converted to locations: ' + notLocatedIPs)
+        console.log('Number of IPs not converted to locations: ' + notLocatedIPs)
         //console.log(ip_list);
     }
     //callback(createMyJson())
@@ -54,21 +54,6 @@ function createMyJson(validElements) {
 // array of IPs question
 // I want to insert in an array the result of getIPs_onefirewall() function ...
 getIPs_onefirewall();
-
-
-// uses database but it's limited to 99.255.255.255
-// to test this module please download the file IP2Location DB24 Sample Bin File from https://www.ip2location.com/developers/nodejs 
-/* var ip2loc = require("ip2location-nodejs");
- 
-//ip2loc.IP2Location_init("./IP-COUNTRY-REGION-CITY-LATITUDE-LONGITUDE-ZIPCODE-TIMEZONE-ISP-DOMAIN-NETSPEED-AREACODE-WEATHER-MOBILE-ELEVATION-USAGETYPE-SAMPLE.BIN");
- 
-testip = ['8.8.8.8', '88.70.10.10', '185.200.212.102'];
-for (var x = 0; x < testip.length; x++) {
-    result = ip2loc.IP2Location_get_all(testip[x]);
-    for (var key in result) {
-        //console.log(key + ": " + result[key]);
-    }
-} */
 
 
 // get's all the location not precise but will be deprecated on 1st July
