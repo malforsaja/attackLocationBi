@@ -1,4 +1,5 @@
 // use onefirewall public API to get IPs
+var geoip = require('geoip-lite');
 var request = require('request');
 
 var getIPs_onefirewall = (req, res) => {
@@ -15,10 +16,24 @@ var getIPs_onefirewall = (req, res) => {
         var str = response.body
         var IPv4_regexp = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/gi;
         var ip_list = str.match(IPv4_regexp);
-        callback(createMyJson(ip_list))
+
+
+        //var ip = "185.200.212.102";
+        var notLocatedIPs = 0;
+        for (let i = 0; i < ip_list.length; i++) {
+            var geo = geoip.lookup(ip_list[i]);
+            if (geo === null) {
+                geo = [0.0000, 0.0000]
+                notLocatedIPs++;
+            } else {         
+                console.log({lat: geo.ll[0], lng: geo.ll[1]});
+            }
+            
+        }
+        console.log('Number of IPs not converted to locations: ' + notLocatedIPs)
         //console.log(ip_list);
     }
-
+    //callback(createMyJson())
     request(options, callback)
 }
 
@@ -37,12 +52,12 @@ function createMyJson(validElements) {
 
 // array of IPs question
 // I want to insert in an array the result of getIPs_onefirewall() function ...
-//getIPs_onefirewall();
+getIPs_onefirewall();
 
 
 // uses database but it's limited to 99.255.255.255
 // to test this module please download the file IP2Location DB24 Sample Bin File from https://www.ip2location.com/developers/nodejs 
-var ip2loc = require("ip2location-nodejs");
+/* var ip2loc = require("ip2location-nodejs");
  
 //ip2loc.IP2Location_init("./IP-COUNTRY-REGION-CITY-LATITUDE-LONGITUDE-ZIPCODE-TIMEZONE-ISP-DOMAIN-NETSPEED-AREACODE-WEATHER-MOBILE-ELEVATION-USAGETYPE-SAMPLE.BIN");
  
@@ -50,21 +65,13 @@ testip = ['8.8.8.8', '88.70.10.10', '185.200.212.102'];
 for (var x = 0; x < testip.length; x++) {
     result = ip2loc.IP2Location_get_all(testip[x]);
     for (var key in result) {
-        console.log(key + ": " + result[key]);
+        //console.log(key + ": " + result[key]);
     }
-}
+} */
 
-
-
-// limited database, my ip isn't found
-var geoip = require('geoip-lite');
-
-var ip = "185.200.212.102";
-var geo = geoip.lookup(ip);
-console.log(geo);
 
 // get's all the location not precise but will be deprecated on 1st July
-var iplocation = require('iplocation')
+/* var iplocation = require('iplocation')
 
 iplocation('185.200.212.102')
     .then(res => {
@@ -73,10 +80,10 @@ iplocation('185.200.212.102')
     })
     .catch(err => {
         console.error(err)
-    })
+    }) */
 
 //get the following information about IPs, doesn't include exact position like street address 
-var where = require('node-where');
+/* var where = require('node-where');
  
 where.is('185.200.212.102', function(err, result) {
   if (result) {
@@ -89,4 +96,4 @@ where.is('185.200.212.102', function(err, result) {
     console.log('Lat: ' + result.get('lat'));
     console.log('Lng: ' + result.get('lng'));
   }
-});
+}); */
