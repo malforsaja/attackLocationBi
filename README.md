@@ -1,5 +1,4 @@
 # attackLocationBi
 
-
-# install dependencies
-## npm install 
+## npm install request
+## npm install geoip-lite
