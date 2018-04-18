@@ -8,31 +8,33 @@ var geoip = require('geoip-lite'),
         }
     };
 
-var getIPs_onefirewall = (req, res) => {
-    request(options, createResp.bind(this));
-};
+var getIPs_onefirewall = function (callback) {
+    request(options, function (error, response) {
+        //extract IPs from the response
+        var str = response.body,
+            IPv4_regexp = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/gi,
+            ip_list = str.match(IPv4_regexp),
+            notLocatedIPs = 0,
+            ip_listForMap = [];
 
-function createResp(error, response) {
-    //extract IPs from the response
-    var str = response.body,
-        IPv4_regexp = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/gi,
-        ip_list = str.match(IPv4_regexp),
-        notLocatedIPs = 0,
-        ip_listForMap = [];
-
-    for (let i = 0; i < ip_list.length; i++) {
-        var geo = geoip.lookup(ip_list[i]);
-        if (geo == null) {
-            //console.log(ip_list[i]);
-            notLocatedIPs++;
-        } else {                   
-            ip_listForMap.push({
-                lat: geo.ll[0],
-                lng: geo.ll[1]
-            });
+        for (let i = 0; i < ip_list.length; i++) {
+            var geo = geoip.lookup(ip_list[i]);
+            if (geo == null) {
+                console.log('notLocatedIP  ' + ip_list[i]);
+                notLocatedIPs++;
+            } else {                   
+                ip_listForMap.push({
+                    lat: geo.ll[0],
+                    lng: geo.ll[1]
+                });
+            }
         }
-    }
-    return ip_listForMap;
+        console.log('Total notLocatedIPs  ' + notLocatedIPs);
+        callback(ip_listForMap);
+    });
 };
 
-getIPs_onefirewall();
+getIPs_onefirewall(
+    function callback (ip_listForMap) {
+        console.log(JSON.stringify(ip_listForMap));
+});
