@@ -20,7 +20,6 @@ var getIPs_onefirewall = function (callback) {
 
         _.map(ip_list, function (item) {
             var geo = geoip.lookup(item);
-
             if (geo == null) {
                 console.log('notLocatedIP  ' + item);
                 notLocatedIPs++;
