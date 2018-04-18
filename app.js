@@ -14,25 +14,31 @@ var getIPs_onefirewall = function (callback) {
         //extract IPs from the response
         var str = response.body,
             IPv4_regexp = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/gi,
-            ip_list = str.match(IPv4_regexp),
-            notLocatedIPs = 0,
-            ip_listForMap = [];
+            ip_list = str.match(IPv4_regexp);
 
-        _.map(ip_list, function (item) {
-            var geo = geoip.lookup(item);
-            if (geo == null) {
-                console.log('notLocatedIP  ' + item);
-                notLocatedIPs++;
-            } else {                   
-                ip_listForMap.push({
-                    lat: geo.ll[0],
-                    lng: geo.ll[1]
-                });
-            }
-        });
-        console.log('Total notLocatedIPs  ' + notLocatedIPs);
-        callback(ip_listForMap);
+        callback(extractedLocatedIPs(ip_list));
     });
+};
+
+function extractedLocatedIPs(ip_list) {
+    var notLocatedIPs = 0,
+        ip_listForMap = [];
+
+    _.map(ip_list, function (item) {
+        var geo = geoip.lookup(item);
+
+        if (geo == null) {
+            console.log('notLocatedIP  ' + item);
+            notLocatedIPs++;
+        } else {                   
+            ip_listForMap.push({
+                lat: geo.ll[0],
+                lng: geo.ll[1]
+            });
+        }
+    });
+    console.log('Total notLocatedIPs  ' + notLocatedIPs);
+    return ip_listForMap;
 };
 
 getIPs_onefirewall(
