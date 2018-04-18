@@ -1,6 +1,7 @@
 // use onefirewall public API to get IPs
 var geoip = require('geoip-lite'),
     request = require('request'),
+    _ = require('underscore'),
     options = {
         url: 'https://app.onefirewall.com/api/v1/ips',
         headers: {
@@ -17,10 +18,11 @@ var getIPs_onefirewall = function (callback) {
             notLocatedIPs = 0,
             ip_listForMap = [];
 
-        for (let i = 0; i < ip_list.length; i++) {
-            var geo = geoip.lookup(ip_list[i]);
+        _.map(ip_list, function (item) {
+            var geo = geoip.lookup(item);
+
             if (geo == null) {
-                console.log('notLocatedIP  ' + ip_list[i]);
+                console.log('notLocatedIP  ' + item);
                 notLocatedIPs++;
             } else {                   
                 ip_listForMap.push({
@@ -28,7 +30,7 @@ var getIPs_onefirewall = function (callback) {
                     lng: geo.ll[1]
                 });
             }
-        }
+        });
         console.log('Total notLocatedIPs  ' + notLocatedIPs);
         callback(ip_listForMap);
     });
