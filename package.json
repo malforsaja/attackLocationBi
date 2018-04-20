@@ -19,8 +19,6 @@
   "dependencies": {
     "express": "^4.16.3",
     "geoip-lite": "^1.2.1",
-    "ip2location-nodejs": "^8.1.2",
-    "iplocation": "^5.0.0",
-    "node-where": "^1.1.0"
+    "underscore": "^1.9.0"
   }
 }

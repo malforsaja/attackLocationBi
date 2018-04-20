@@ -8,82 +8,126 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <style>
-      /* Always set the map height explicitly to define the size of the div
+        /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-      #map {
-        height: 400px;
-        width: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
+
+        #map {
+            height: 650px;
+            width: 75%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0JIhLi2sV318Z7_LoOOBNoItne9C6lxM&callback=initMap"
         type="text/javascript"></script>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
+
+
     <h1>Attack Location BI</h1>
     <div id="map"></div>
-    <div id="map-canvas" style="width:600px;height:400px"></div>
-
+    <div id="map-canvas" style="width:700;height:600px"></div>
 
 
     <script type="text/javascript">
-        function initMap() {
+
+        /* function initMap() {
             var options = {
                 center: {
-                    lat: 41.3275,
-                    lng: 19.8187
+                    lat: 0,
+                    lng: 0
                 },
-                zoom: 9
+                zoom: 2
             }
             // new map
             var map = new google.maps.Map(document.getElementById('map'), options);
 
             // Array of Markers
             var markers = [
-            {lat: 41.3275, lng: 19.8187},
-            {lat: 41.3246, lng: 19.4565},
-            {lat: 41.5095, lng: 19.7711}
+                { lat: 41.3275, lng: 19.8187 },
+                { lat: 41.3246, lng: 19.4565 },
+                { lat: 41.5095, lng: 19.7711 }
             ]
             // loop the array 
             for (let i = 0; i < markers.length; i++) {
-                addMarker(markers[i])                
+                addMarker(markers[i])
             }
-            
+
             /* addMarker({lat: 41.3275, lng: 19.8187});
             addMarker({lat: 41.3246, lng: 19.4565});
             addMarker({lat: 41.5095, lng: 19.7711}); */
-            // add markers with functions
-            function addMarker(coords) {
-                var marker = new google.maps.Marker({
-                    position: coords,
-                    map: map
-                })
-            }
-            
-            /*
-            // marker
+        // add markers with functions
+        function addMarker(coords) {
             var marker = new google.maps.Marker({
-                position: {lat: 41.3275, lng: 19.8187},
+                position: coords,
                 map: map
             })
-
-            // info 
-            var infoWindow = new google.maps.InfoWindow({
-                content: '<h2>Tirana</h2>'
-            })
-
-            marker.addListener('click', function() {
-                infoWindow.open(map, marker);
-            })
-            */
         }
+
+        /*
+        // marker
+        var marker = new google.maps.Marker({
+            position: {lat: 41.3275, lng: 19.8187},
+            map: map
+        })
+
+        // info 
+        var infoWindow = new google.maps.InfoWindow({
+            content: '<h2>Tirana</h2>'
+        })
+
+        marker.addListener('click', function() {
+            infoWindow.open(map, marker);
+        })
+        
+    } */
+
+        function initMap() {
+            var mapOptions = {
+                zoom: 2,
+                center: {
+                    lat: 0,
+                    lng: 0
+                }
+            };
+            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            var marker;
+
+            $(document).ready(function () {
+                $.ajax({
+                    url: "http://localhost:3000/getiploc",
+                    method: "GET",
+                    success: function (data) {
+                        data.forEach(function (item) {
+                            var location = item;
+                            //console.log(location.lat);
+                            marker = new google.maps.Marker({
+                                position: new google.maps.LatLng(location.lat, location.lng),
+                                map: map
+                            });
+                        });
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+
+                })
+            })
+        }
+
+
+
 
     </script>
 </body>
