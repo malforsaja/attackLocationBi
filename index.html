@@ -41,39 +41,38 @@
 
 
     <script type="text/javascript">
-
         /* function initMap() {
-            var options = {
-                center: {
-                    lat: 0,
-                    lng: 0
-                },
-                zoom: 2
-            }
-            // new map
-            var map = new google.maps.Map(document.getElementById('map'), options);
+                    var options = {
+                        center: {
+                            lat: 0,
+                            lng: 0
+                        },
+                        zoom: 2
+                    }
+                    // new map
+                    var map = new google.maps.Map(document.getElementById('map'), options);
 
-            // Array of Markers
-            var markers = [
-                { lat: 41.3275, lng: 19.8187 },
-                { lat: 41.3246, lng: 19.4565 },
-                { lat: 41.5095, lng: 19.7711 }
-            ]
-            // loop the array 
-            for (let i = 0; i < markers.length; i++) {
-                addMarker(markers[i])
-            }
+                    // Array of Markers
+                    var markers = [
+                        { lat: 41.3275, lng: 19.8187 },
+                        { lat: 41.3246, lng: 19.4565 },
+                        { lat: 41.5095, lng: 19.7711 }
+                    ]
+                    // loop the array 
+                    for (let i = 0; i < markers.length; i++) {
+                        addMarker(markers[i])
+                    }
 
-            /* addMarker({lat: 41.3275, lng: 19.8187});
-            addMarker({lat: 41.3246, lng: 19.4565});
-            addMarker({lat: 41.5095, lng: 19.7711}); */
+                    /* addMarker({lat: 41.3275, lng: 19.8187});
+                    addMarker({lat: 41.3246, lng: 19.4565});
+                    addMarker({lat: 41.5095, lng: 19.7711}); */
         // add markers with functions
-        function addMarker(coords) {
+        /* function addMarker(coords) {
             var marker = new google.maps.Marker({
                 position: coords,
                 map: map
             })
-        }
+        } */
 
         /*
         // marker
@@ -103,20 +102,38 @@
             };
             var map = new google.maps.Map(document.getElementById('map'), mapOptions);
             var marker;
+            // tooltip info on click
+            var infoWindow = new google.maps.InfoWindow({
+                content: ""
+            })
 
             $(document).ready(function () {
                 $.ajax({
                     url: "http://localhost:3000/getiploc",
                     method: "GET",
                     success: function (data) {
-                        data.forEach(function (item) {
+                        //console.log(data)
+                        map_ips = data.iploc
+                        map_ips.forEach(function (item) {
                             var location = item;
                             //console.log(location.lat);
                             marker = new google.maps.Marker({
                                 position: new google.maps.LatLng(location.lat, location.lng),
                                 map: map
                             });
+                            marker.addListener('click', function() {
+                                infoWindow.open(map, marker);
+                            })
                         });
+                        ipScore = data.ipscores
+                        ipScore.forEach(function (item) {
+                            var location = item;
+                            // tooltip info on click
+                            //console.log(location.score);
+                            
+                            infoWindow.setContent('IP: ' + location.ip + ' Score: ' + location.score);
+                        });
+
                     },
                     error: function (data) {
                         console.log(data);
@@ -125,10 +142,6 @@
                 })
             })
         }
-
-
-
-
     </script>
 </body>
 
