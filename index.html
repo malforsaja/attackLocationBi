@@ -68,7 +68,56 @@
 
                         for (let i = 0; i < data.length; i++) {
                             // tooltip info on click
-                            marker = new google.maps.Marker({
+
+                            if (data[i].score <= 50) {
+                                marker = new google.maps.Marker({
+                                position: new google.maps.LatLng(data[i].lat, data[i].lng),
+                                map: map,
+                                title: ' ' + data[i],
+                                icon: "http://maps.google.com/mapfiles/ms/icons/yellow.png"
+                                });
+
+                            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                                return function() { 
+                                    infoWindow.setContent("IP: " + data[i].ip + " Score: " + data[i].score); 
+                                    infoWindow.open(map, marker); 
+                                } 
+                            })(marker, i));
+                            }
+
+                            if (data[i].score >= 51 && data[i].score <= 100) {
+                                marker = new google.maps.Marker({
+                                position: new google.maps.LatLng(data[i].lat, data[i].lng),
+                                map: map,
+                                title: ' ' + data[i],
+                                icon: "http://maps.google.com/mapfiles/ms/icons/orange.png"
+                                });
+
+                            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                                return function() { 
+                                    infoWindow.setContent("IP: " + data[i].ip + " Score: " + data[i].score); 
+                                    infoWindow.open(map, marker); 
+                                } 
+                            })(marker, i));
+                            }
+
+                            if (data[i].score >= 101) {
+                                marker = new google.maps.Marker({
+                                position: new google.maps.LatLng(data[i].lat, data[i].lng),
+                                map: map,
+                                title: ' ' + data[i],
+                                icon: "http://maps.google.com/mapfiles/ms/icons/red.png"
+                                });
+
+                            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                                return function() { 
+                                    infoWindow.setContent("IP: " + data[i].ip + " Score: " + data[i].score); 
+                                    infoWindow.open(map, marker); 
+                                } 
+                            })(marker, i));
+                            }
+
+                            /* marker = new google.maps.Marker({
                                 position: new google.maps.LatLng(data[i].lat, data[i].lng),
                                 map: map,
                                 title: ' ' + data[i]
@@ -79,7 +128,7 @@
                                     infoWindow.setContent("IP: " + data[i].ip + " Score: " + data[i].score); 
                                     infoWindow.open(map, marker); 
                                 } 
-                            })(marker, i));
+                            })(marker, i)); */
                         }
                     },
                     error: function (data) {
