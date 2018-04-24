@@ -76,7 +76,7 @@
 
                             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                                 return function() { 
-                                    infoWindow.setContent("IP: " + data[i].ip); 
+                                    infoWindow.setContent("IP: " + data[i].ip + " Score: " + data[i].score); 
                                     infoWindow.open(map, marker); 
                                 } 
                             })(marker, i));
