@@ -58,11 +58,11 @@ var getIPLocation = (req, res) => {
         //extract IPs from the response
         var objectRes = JSON.parse(response.body).body
         let ip_and_score = [];
-
         // iterate through an array of objects
         objectRes.forEach(function (keys) {
             //console.log(keys.score)
-            ip_and_score.push({ip: keys.ip, score: keys.score})
+            //ip_and_score.push({ip: keys.ip, score: keys.score})
+            ip_and_score.push(keys.score)
         });
         //console.log(ip_and_score);
         
@@ -82,12 +82,15 @@ var getIPLocation = (req, res) => {
             } else {
                 ip_listForMap.push({
                     lat: geo.ll[0],
-                    lng: geo.ll[1]
+                    lng: geo.ll[1],
+                    ip: ip_list[i],
+                    score: ip_and_score[i]
                 });
             }
         }
         console.log('Total notLocatedIPs  ' + notLocatedIPs);
-        res.status(200).json({iploc: ip_listForMap, ipscores: ip_and_score});
+        //res.status(200).json({iploc: ip_listForMap, ipscores: ip_and_score});
+        res.status(200).json(ip_listForMap);
     };
 
     request(options, callback)
