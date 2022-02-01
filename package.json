@@ -18,7 +18,7 @@
   "homepage": "https://github.com/onefirewall/attackLocationBi#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "geoip-lite": "^1.4.2",
+    "geoip-lite": "^1.4.3",
     "request": "^2.85.0",
     "underscore": "^1.13.1"
   }
